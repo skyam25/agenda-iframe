@@ -23,7 +23,7 @@
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -47,9 +47,10 @@
         
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: minmax(400px, 500px) minmax(500px, 1fr);
+            gap: 3rem;
             margin-bottom: 3rem;
+            overflow-x: auto;
         }
         
         .config-panel, .preview-panel {
@@ -131,12 +132,12 @@
             border: 2px solid #e2e8f0;
             border-radius: 0.5rem;
             height: 500px;
-            overflow: hidden;
+            overflow: auto;
             position: relative;
             width: 600px;
-            max-width: 100%;
+            min-width: 300px;
             margin: 0 auto;
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .preview-iframe {
@@ -215,6 +216,25 @@
         
         .copy-button.copied {
             background: #48bb78;
+        }
+        
+        /* Large screens - even more space */
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1800px;
+            }
+            
+            .main-content {
+                gap: 4rem;
+            }
+        }
+        
+        /* Medium screens */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: minmax(350px, 450px) minmax(400px, 1fr);
+                gap: 2rem;
+            }
         }
         
         @media (max-width: 768px) {
@@ -412,6 +432,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
     // Wrap everything in an IIFE to avoid global pollution
     (function() {
@@ -497,8 +518,23 @@
             const widgetUrl = buildWidgetUrl(config);
             
             const iframe = document.getElementById('previewIframe');
+            const container = document.querySelector('.preview-container');
+            
             if (iframe) {
                 iframe.src = widgetUrl;
+                
+                // Apply width and height from configuration to the preview iframe
+                iframe.style.width = config.width || '100%';
+                iframe.style.height = (config.height || '600') + 'px';
+            }
+            
+            if (container) {
+                // Update container height to match configured height
+                container.style.height = (config.height || '600') + 'px';
+                
+                // Container width is controlled by the Preview Width dropdown for preview purposes
+                const previewWidth = document.getElementById('previewWidth').value;
+                container.style.width = previewWidth;
             }
             
             updatePreviewSize();
@@ -506,11 +542,11 @@
         }
         
         function updatePreviewSize() {
+            // Update preview container width based on dropdown selection
             const previewWidth = document.getElementById('previewWidth').value;
             const container = document.querySelector('.preview-container');
             
             if (container) {
-                // Update preview container width (separate from iframe config)
                 container.style.width = previewWidth;
             }
         }

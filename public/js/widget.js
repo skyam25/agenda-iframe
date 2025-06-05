@@ -221,7 +221,7 @@ class ZoomAgendaWidget {
                 eventDetailsPromise = this.fetchEventDetails();
             }
             
-            const [sessions, eventDetails] = await Promise.all([sessionsPromise, eventDetailsPromise]);
+            const [, eventDetails] = await Promise.all([sessionsPromise, eventDetailsPromise]);
             
             if (eventDetails) {
                 this.eventDetails = eventDetails;
