@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Agenda Widget</title>
+    <link rel="stylesheet" href="/agenda/css/widget.css">
+</head>
+<body>
+    <div class="agenda-container">
+        <h1 class="agenda-title" id="agenda-title">Event Agenda</h1>
+        <div class="event-date" id="event-date" style="display: none;"></div>
+        
+        <!-- Loading State -->
+        <div id="loading-state" class="loading-state">
+            <div class="loading-skeleton">
+                <div class="skeleton-bar wide"></div>
+                <div class="skeleton-bar narrow"></div>
+                <div class="skeleton-bar wide"></div>
+            </div>
+            <p>Loading event sessions...</p>
+        </div>
+        
+        <!-- Error State -->
+        <div id="error-state" class="error-state" style="display: none;">
+            <h3>Unable to load agenda</h3>
+            <p id="error-message">Please try again later.</p>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <h3>No sessions available</h3>
+            <p>This event doesn't have any sessions scheduled yet.</p>
+        </div>
+        
+        <!-- Sessions Grid -->
+        <div id="sessions-grid" class="sessions-grid" style="display: none;">
+            <!-- Sessions will be populated here by JavaScript -->
+        </div>
+    </div>
+
+    <script src="/agenda/js/widget.js"></script>
+</body>
+</html>

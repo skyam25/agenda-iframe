@@ -1,0 +1,308 @@
+/* Zoom Agenda Widget Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-color, #f9fafb);
+    color: var(--text-color, #111827);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.agenda-container {
+    padding: var(--container-padding, 2rem 1.5rem);
+    max-width: var(--max-width, 1200px);
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.agenda-title {
+    color: var(--title-color, #111827);
+    font-size: var(--title-size, 2rem);
+    font-weight: var(--title-weight, 700);
+    margin-bottom: var(--title-margin, 2.5rem);
+    text-align: var(--title-align, left);
+    line-height: 1.2;
+}
+
+.event-date {
+    color: var(--date-color, #6b7280);
+    font-size: var(--date-size, 1.125rem);
+    font-weight: var(--date-weight, 500);
+    margin-bottom: var(--date-margin, 2rem);
+    text-align: var(--title-align, left);
+    line-height: 1.4;
+}
+
+.sessions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--session-gap, 1.5rem);
+}
+
+.session-card {
+    background-color: var(--card-bg, #ffffff);
+    padding: var(--card-padding, 2rem);
+    border-radius: var(--card-radius, 0.75rem);
+    box-shadow: var(--card-shadow, 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06));
+    transition: var(--card-transition, box-shadow 0.2s ease);
+    border: var(--card-border, 1px solid #f3f4f6);
+    position: relative;
+    margin-bottom: var(--session-gap, 1.5rem);
+}
+
+.session-card:last-child {
+    margin-bottom: 0;
+}
+
+.session-card:hover {
+    box-shadow: var(--card-hover-shadow, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05));
+    transform: var(--card-hover-transform, none);
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1.5rem;
+}
+
+.session-name {
+    color: var(--session-name-color, #111827);
+    font-size: var(--session-name-size, 1.375rem);
+    font-weight: var(--session-name-weight, 600);
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.session-time {
+    color: var(--time-color, #6b7280);
+    font-size: var(--time-size, 0.9rem);
+    white-space: nowrap;
+    background: var(--time-bg, #f9fafb);
+    padding: var(--time-padding, 0.5rem 0.75rem);
+    border-radius: var(--time-radius, 0.375rem);
+    font-weight: 500;
+    border: 1px solid #e5e7eb;
+}
+
+.session-description {
+    color: var(--desc-color, #4b5563);
+    font-size: var(--desc-size, 1rem);
+    margin: 1.25rem 0;
+    line-height: 1.6;
+}
+
+.speakers-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f3f4f6;
+}
+
+.speakers-label {
+    color: var(--speakers-label-color, #6b7280);
+    font-size: var(--speakers-size, 0.875rem);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.speakers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.speaker-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--speaker-bg, #f9fafb);
+    border-radius: 0.5rem;
+    border: 1px solid #f3f4f6;
+}
+
+.speaker-avatar {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--speaker-avatar-bg, #f3f4f6);
+    border: 2px solid var(--speaker-avatar-border, #ffffff);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.speaker-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.speaker-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.speaker-name {
+    color: var(--speaker-color, #374151);
+    font-size: var(--speakers-size, 0.875rem);
+    font-weight: var(--speaker-weight, 500);
+    display: block;
+    line-height: 1.4;
+}
+
+.speaker-title {
+    color: var(--speaker-title-color, #6b7280);
+    font-size: calc(var(--speakers-size, 0.875rem) * 0.9);
+    font-weight: 400;
+    display: block;
+    margin-top: 0.125rem;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.loading-skeleton {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton-bar {
+    background-color: var(--loading-color, #e5e7eb);
+    border-radius: 0.25rem;
+    height: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-bar.wide { width: 75%; }
+.skeleton-bar.narrow { width: 50%; }
+
+.empty-state, .error-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--empty-color, #6b7280);
+}
+
+.error-state {
+    color: var(--error-color, #dc2626);
+    background-color: var(--error-bg, #fef2f2);
+    border-radius: 0.75rem;
+    border: 1px solid var(--error-border, #fecaca);
+    margin: 1rem 0;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .agenda-container {
+        padding: var(--mobile-padding, 1.5rem 1rem);
+    }
+    
+    .session-card {
+        padding: var(--mobile-card-padding, 1.5rem);
+    }
+    
+    .session-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .agenda-title {
+        font-size: var(--mobile-title-size, 1.75rem);
+        margin-bottom: 2rem;
+    }
+    
+    .event-date {
+        font-size: var(--mobile-date-size, 1rem);
+        margin-bottom: 1.5rem;
+    }
+    
+    .session-name {
+        font-size: 1.25rem;
+    }
+    
+    .session-time {
+        padding: 0.375rem 0.625rem;
+        font-size: 0.8rem;
+    }
+    
+    .speaker-avatar {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .speaker-item {
+        padding: 0.625rem;
+    }
+}
+
+/* Layout options */
+.grid-layout .sessions-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--session-gap, 1.5rem);
+    flex-direction: unset;
+}
+
+.grid-layout .session-card {
+    margin-bottom: 0 !important;
+}
+
+/* Responsive grid adjustments */
+@media (min-width: 768px) {
+    .grid-layout .sessions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid-layout .sessions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+.compact-layout .sessions-grid {
+    gap: var(--session-gap, 1rem);
+}
+
+.compact-layout .session-card {
+    padding: var(--card-padding, 1.5rem);
+    margin-bottom: var(--session-gap, 1rem);
+}
+
+.compact-layout .session-card:last-child {
+    margin-bottom: 0;
+}
+
+.compact-layout .session-header {
+    margin-bottom: 0.75rem;
+}
+
+.compact-layout .session-description {
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+}
+
+.compact-layout .speakers-section {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+}

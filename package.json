@@ -1,0 +1,57 @@
+{
+  "name": "zoom-agenda-iframe",
+  "version": "1.0.0",
+  "description": "Embeddable iframe widget for Zoom event agenda with configuration options",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "start:old": "node server_old_backup/proxy-server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "build": "echo 'No build process needed for iframe solution'"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "redis": "^5.5.5",
+    "winston": "^3.17.0"
+  },
+  "keywords": [
+    "iframe",
+    "widget",
+    "zoom",
+    "events",
+    "agenda",
+    "embeddable",
+    "embed"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "files": [
+    "server/",
+    "widget/",
+    "embed/",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/zoom-agenda-iframe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/zoom-agenda-iframe/issues"
+  },
+  "homepage": "https://github.com/your-username/zoom-agenda-iframe#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.1"
+  }
+}

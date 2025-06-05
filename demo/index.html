@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Zoom Agenda Widget - Embed Code Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .config-panel, .preview-panel {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .config-panel h2, .preview-panel h2 {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .color-input {
+            width: 60px !important;
+            height: 40px;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .preview-controls {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .preview-controls label {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.875rem;
+        }
+        
+        .preview-controls select {
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background: white;
+            min-width: 140px;
+        }
+        
+        .preview-container {
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            width: 600px;
+            max-width: 100%;
+            margin: 0 auto;
+            transition: width 0.3s ease;
+        }
+        
+        .preview-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .code-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .code-section h2 {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+        
+        .code-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .code-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #718096;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .code-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .code-content {
+            position: relative;
+        }
+        
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        
+        .copy-button:hover {
+            background: #5a67d8;
+        }
+        
+        .copy-button.copied {
+            background: #48bb78;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .preview-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .preview-controls select {
+                width: 100%;
+                min-width: unset;
+            }
+            
+            .preview-container {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Zoom Agenda Widget</h1>
+            <p>Generate embeddable iframe code for your Zoom event agenda</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Configuration Panel -->
+            <div class="config-panel">
+                <h2>⚙️ Configuration</h2>
+                
+                <div class="form-group">
+                    <label for="eventId">Event ID *</label>
+                    <input type="text" id="eventId" placeholder="Enter your Zoom Event ID" value="8x0xmndUQ6CfeyL9h2rZKA">
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Widget Title</label>
+                    <input type="text" id="title" placeholder="Event Agenda" value="Event Agenda">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="theme">Theme</label>
+                        <select id="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="minimal">Minimal</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="layout">Layout</label>
+                        <select id="layout">
+                            <option value="list">List</option>
+                            <option value="grid">Grid</option>
+                            <option value="compact">Compact</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="width">Width</label>
+                        <input type="text" id="width" placeholder="100%" value="100%">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="height">Height</label>
+                        <input type="text" id="height" placeholder="600" value="600">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="autoResize" checked> Auto-resize iframe
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="disableHover" checked> Disable hover effects
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="showSpeakers"> Show speakers with avatars
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="showDate"> Show event date
+                    </label>
+                </div>
+                
+                <div class="form-group">
+                    <button type="button" id="updateBtn" style="background: #667eea; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer;">Update Preview</button>
+                </div>
+                
+                <!-- Custom Colors (shown when theme is 'custom') -->
+                <div id="customColors" style="display: none;">
+                    <h3>Custom Colors</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bgColor">Background</label>
+                            <input type="color" id="bgColor" class="color-input" value="#f9fafb">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cardBg">Card Background</label>
+                            <input type="color" id="cardBg" class="color-input" value="#ffffff">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="titleColor">Title Color</label>
+                            <input type="color" id="titleColor" class="color-input" value="#111827">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="sessionNameColor">Session Name</label>
+                            <input type="color" id="sessionNameColor" class="color-input" value="#111827">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="timeColor">Time Color</label>
+                            <input type="color" id="timeColor" class="color-input" value="#6b7280">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descColor">Description</label>
+                            <input type="color" id="descColor" class="color-input" value="#4b5563">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <h2>👀 Live Preview</h2>
+                
+                <div class="preview-controls">
+                    <label for="previewWidth">Preview Width:</label>
+                    <select id="previewWidth">
+                        <option value="100%">Full Width (100%)</option>
+                        <option value="800px">Large (800px)</option>
+                        <option value="600px" selected>Medium (600px)</option>
+                        <option value="400px">Small (400px)</option>
+                        <option value="320px">Mobile (320px)</option>
+                    </select>
+                </div>
+                
+                <div class="preview-container">
+                    <iframe id="previewIframe" class="preview-iframe" src="/agenda/?eventId=8x0xmndUQ6CfeyL9h2rZKA&apiBaseUrl=http://localhost:3004/api&title=Event%20Agenda"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Generation -->
+        <div class="code-section">
+            <h2>📋 Embed Code</h2>
+            
+            <div class="code-tabs">
+                <button class="code-tab active" data-tab="basic">Basic Embed</button>
+                <button class="code-tab" data-tab="responsive">Responsive</button>
+                <button class="code-tab" data-tab="advanced">Advanced</button>
+            </div>
+            
+            <div class="code-content">
+                <div id="basicCode" class="code-block">Loading...</div>
+                <div id="responsiveCode" class="code-block" style="display: none;">Loading...</div>
+                <div id="advancedCode" class="code-block" style="display: none;">Loading...</div>
+                <button class="copy-button" id="copyBtn">Copy Code</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Wrap everything in an IIFE to avoid global pollution
+    (function() {
+        'use strict';
+        
+        // Configuration
+        let currentCodeTab = 'basic';
+        const embedConfig = {
+            serverBase: window.location.origin || 'http://localhost:3004',
+            apiServerBase: 'http://localhost:3004',
+            defaultEventId: '8x0xmndUQ6CfeyL9h2rZKA',
+            defaults: {
+                title: 'Event Agenda',
+                theme: 'light',
+                layout: 'list',
+                width: '100%',
+                height: '600',
+                autoResize: true
+            }
+        };
+
+        // Helper functions
+        function getConfiguration() {
+            const theme = document.getElementById('theme').value;
+            
+            const config = {
+                eventId: document.getElementById('eventId').value,
+                title: document.getElementById('title').value,
+                theme: theme,
+                layout: document.getElementById('layout').value,
+                width: document.getElementById('width').value,
+                height: document.getElementById('height').value,
+                autoResize: document.getElementById('autoResize').checked,
+                disableHover: document.getElementById('disableHover').checked,
+                showSpeakers: document.getElementById('showSpeakers').checked,
+                showDate: document.getElementById('showDate').checked
+            };
+            
+            // Add custom colors if theme is custom
+            if (theme === 'custom') {
+                config.bgColor = document.getElementById('bgColor').value;
+                config.cardBg = document.getElementById('cardBg').value;
+                config.titleColor = document.getElementById('titleColor').value;
+                config.sessionNameColor = document.getElementById('sessionNameColor').value;
+                config.timeColor = document.getElementById('timeColor').value;
+                config.descColor = document.getElementById('descColor').value;
+            }
+            
+            return config;
+        }
+        
+        function buildWidgetUrl(config) {
+            const url = new URL('/agenda/', embedConfig.serverBase);
+            const apiBaseUrl = embedConfig.apiServerBase + '/api';
+            
+            // Required parameters
+            url.searchParams.set('eventId', config.eventId);
+            url.searchParams.set('apiBaseUrl', apiBaseUrl);
+            url.searchParams.set('title', config.title);
+            url.searchParams.set('theme', config.theme);
+            url.searchParams.set('layout', config.layout);
+            url.searchParams.set('autoResize', config.autoResize);
+            url.searchParams.set('disableHover', config.disableHover);
+            url.searchParams.set('showSpeakers', config.showSpeakers);
+            url.searchParams.set('showDate', config.showDate);
+            
+            // Optional custom colors
+            if (config.theme === 'custom') {
+                if (config.bgColor) url.searchParams.set('bgColor', config.bgColor);
+                if (config.cardBg) url.searchParams.set('cardBg', config.cardBg);
+                if (config.titleColor) url.searchParams.set('titleColor', config.titleColor);
+                if (config.sessionNameColor) url.searchParams.set('sessionNameColor', config.sessionNameColor);
+                if (config.timeColor) url.searchParams.set('timeColor', config.timeColor);
+                if (config.descColor) url.searchParams.set('descColor', config.descColor);
+            }
+            
+            return url.toString();
+        }
+
+        // Main update function
+        function updatePreview() {
+            const config = getConfiguration();
+            const widgetUrl = buildWidgetUrl(config);
+            
+            const iframe = document.getElementById('previewIframe');
+            if (iframe) {
+                iframe.src = widgetUrl;
+            }
+            
+            updatePreviewSize();
+            updateCode();
+        }
+        
+        function updatePreviewSize() {
+            const previewWidth = document.getElementById('previewWidth').value;
+            const container = document.querySelector('.preview-container');
+            
+            if (container) {
+                // Update preview container width (separate from iframe config)
+                container.style.width = previewWidth;
+            }
+        }
+        
+        function updateCode() {
+            const config = getConfiguration();
+            const widgetUrl = buildWidgetUrl(config);
+            
+            // Basic embed code
+            const basicCode = `<iframe 
+  src="${widgetUrl}"
+  width="${config.width}"
+  height="${config.height}"
+  frameborder="0"
+  style="border: none; overflow: hidden;"
+  title="${config.title}">
+</iframe>`;
+            
+            // Responsive embed code
+            const responsiveCode = `<div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+  <iframe 
+    src="${widgetUrl}"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+    frameborder="0"
+    title="${config.title}">
+  </iframe>
+</div>`;
+            
+            // Advanced embed code with JavaScript
+            const advancedCode = `<!-- Zoom Agenda Widget -->
+<div id="zoom-agenda-container"></div>
+
+<script>
+(function() {
+  const iframe = document.createElement('iframe');
+  iframe.src = '${widgetUrl}';
+  iframe.width = '${config.width}';
+  iframe.height = '${config.height}';
+  iframe.frameBorder = '0';
+  iframe.style.cssText = 'border: none; overflow: hidden;';
+  iframe.title = '${config.title}';
+  
+  // Auto-resize functionality
+  window.addEventListener('message', function(event) {
+    if (event.data.type === 'resize' && event.source === iframe.contentWindow) {
+      iframe.height = event.data.height + 'px';
+    }
+  });
+  
+  document.getElementById('zoom-agenda-container').appendChild(iframe);
+})();
+<\/script>`;
+            
+            document.getElementById('basicCode').textContent = basicCode;
+            document.getElementById('responsiveCode').textContent = responsiveCode;
+            document.getElementById('advancedCode').textContent = advancedCode;
+        }
+        
+        function showCodeTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+            
+            // Show/hide code blocks
+            document.getElementById('basicCode').style.display = tabName === 'basic' ? 'block' : 'none';
+            document.getElementById('responsiveCode').style.display = tabName === 'responsive' ? 'block' : 'none';
+            document.getElementById('advancedCode').style.display = tabName === 'advanced' ? 'block' : 'none';
+            
+            currentCodeTab = tabName;
+        }
+        
+        function copyCode() {
+            const codeBlocks = {
+                basic: document.getElementById('basicCode'),
+                responsive: document.getElementById('responsiveCode'),
+                advanced: document.getElementById('advancedCode')
+            };
+            
+            const code = codeBlocks[currentCodeTab].textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const button = document.getElementById('copyBtn');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
+                alert('Failed to copy code. Please select and copy manually.');
+            });
+        }
+        
+        function toggleCustomColors() {
+            const theme = document.getElementById('theme').value;
+            const customColors = document.getElementById('customColors');
+            customColors.style.display = theme === 'custom' ? 'block' : 'none';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing demo page...');
+            
+            // Add event listeners using addEventListener instead of onclick
+            document.getElementById('updateBtn').addEventListener('click', updatePreview);
+            document.getElementById('copyBtn').addEventListener('click', copyCode);
+            
+            // Preview width control
+            document.getElementById('previewWidth').addEventListener('change', updatePreviewSize);
+            
+            // Tab switching
+            document.querySelectorAll('.code-tab').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    showCodeTab(e.target.dataset.tab);
+                });
+            });
+            
+            // Theme change
+            document.getElementById('theme').addEventListener('change', function() {
+                toggleCustomColors();
+                updatePreview();
+            });
+            
+            // Add change listeners to all form inputs
+            ['eventId', 'title', 'theme', 'layout', 'width', 'height', 'autoResize', 'disableHover', 'showSpeakers', 'showDate',
+             'bgColor', 'cardBg', 'titleColor', 'sessionNameColor', 'timeColor', 'descColor'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('change', updatePreview);
+                    element.addEventListener('input', updatePreview);
+                }
+            });
+            
+            // Initial setup
+            toggleCustomColors();
+            updatePreviewSize(); // Set initial preview size
+            updatePreview();
+            
+            console.log('Demo page initialized successfully!');
+        });
+    })();
+    </script>
+</body>
+</html>
