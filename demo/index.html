@@ -261,7 +261,7 @@
                 
                 <div class="form-group">
                     <label for="eventId">Event ID *</label>
-                    <input type="text" id="eventId" placeholder="Enter your Zoom Event ID" value="8x0xmndUQ6CfeyL9h2rZKA">
+                    <input type="text" id="eventId" placeholder="Enter your Zoom Event ID" value="">
                 </div>
                 
                 <div class="form-group">
@@ -388,7 +388,7 @@
                 </div>
                 
                 <div class="preview-container">
-                    <iframe id="previewIframe" class="preview-iframe" src="/agenda/?eventId=8x0xmndUQ6CfeyL9h2rZKA&apiBaseUrl=http://localhost:3004/api&title=Event%20Agenda"></iframe>
+                    <iframe id="previewIframe" class="preview-iframe" src="/agenda/?eventId=&apiBaseUrl=http://localhost:3004/api&title=Event%20Agenda"></iframe>
                 </div>
             </div>
         </div>
@@ -422,7 +422,7 @@
         const embedConfig = {
             serverBase: window.location.origin || 'http://localhost:3004',
             apiServerBase: 'http://localhost:3004',
-            defaultEventId: '8x0xmndUQ6CfeyL9h2rZKA',
+            defaultEventId: EMBED_CONFIG.defaultEventId,
             defaults: {
                 title: 'Event Agenda',
                 theme: 'light',
@@ -649,6 +649,9 @@
             });
             
             // Initial setup
+            // Set default event ID from config
+            document.getElementById('eventId').value = embedConfig.defaultEventId || '';
+            
             toggleCustomColors();
             updatePreviewSize(); // Set initial preview size
             updatePreview();

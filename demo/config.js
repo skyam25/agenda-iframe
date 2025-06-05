@@ -12,8 +12,8 @@ window.EMBED_CONFIG = {
     // API server (working Zoom Events API server)
     apiServerBase: 'http://localhost:3004',
     
-    // Default Event ID for quick testing - working with real Zoom Events API
-    defaultEventId: '8x0xmndUQ6CfeyL9h2rZKA',  // Demo event ID
+    // Default Event ID for quick testing - replace with your own Zoom Event ID
+    defaultEventId: 'YOUR_EVENT_ID_HERE',  // Replace with your Zoom Event ID
     
     // Default widget configuration
     defaults: {

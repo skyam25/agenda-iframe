@@ -46,17 +46,25 @@ SaaS-ready embeddable iframe solution for Zoom event agendas with secure multi-t
 
 ### 1. Configure Credentials
 
-**IMPORTANT**: Never commit real credentials to git. Always use environment variables or a separate `.env` file.
+**IMPORTANT**: Never commit real credentials to git. Always use environment variables in a `.env` file.
 
 ```bash
 # Copy the example environment file
 cp .env.example .env
+```
 
-# Edit .env with your actual Zoom credentials
-export ZOOM_ACCOUNT_ID="your_account_id"
-export ZOOM_CLIENT_ID="your_client_id"
-export ZOOM_CLIENT_SECRET="your_client_secret"
-export DEFAULT_EVENT_ID="your_event_id"
+**Edit the `.env` file** with your actual Zoom credentials:
+```bash
+# .env file
+ZOOM_ACCOUNT_ID=your_zoom_account_id_here
+ZOOM_CLIENT_ID=your_zoom_client_id_here  
+ZOOM_CLIENT_SECRET=your_zoom_client_secret_here
+DEFAULT_EVENT_ID=your_default_event_id_here
+```
+
+**For demo configuration**, also update `demo/config.js`:
+```javascript
+defaultEventId: 'your_demo_event_id_here'
 ```
 
 ### 2. Install Dependencies & Start Server
